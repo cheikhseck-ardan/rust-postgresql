@@ -5,10 +5,11 @@ fn main() -> Result<(), Error> {
 	
 	let con_string = env::var("SQL_STRING")
 	.expect("$SQL_STRING is not set");
+
     let mut client = Client::connect(&con_string, NoTls)?;
     
     client.batch_execute("
-        CREATE TABLE IF NOT EXISTS developer (
+        CREATE TABLE IF NOT EXISTS author (
             id              SERIAL PRIMARY KEY,
             name            VARCHAR NOT NULL
         )
@@ -17,7 +18,9 @@ fn main() -> Result<(), Error> {
     let name = "Herbert W.";
 	client.execute(
 	    "INSERT INTO author (name) VALUES ($1)",
-	    &[&name],
+	    &[
+	    	&name,
+	    ],
 	)?;
 
 	for row in client.query("SELECT id, name FROM author", &[])? {
