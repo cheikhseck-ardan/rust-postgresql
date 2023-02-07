@@ -1,8 +1,10 @@
 use postgres::{Client, NoTls, Error};
+use std::env;
 
 fn main() -> Result<(), Error> {
-
-    let mut client = Client::connect("postgresql://simuam:password@localhost:5432/auth", NoTls)?;
+	
+	let con_string = env::var("SQL_STRING").expect("$SQL_STRING is not set");
+    let mut client = Client::connect(&con_string, NoTls)?;
     
     client.batch_execute("
         CREATE TABLE IF NOT EXISTS developer (
