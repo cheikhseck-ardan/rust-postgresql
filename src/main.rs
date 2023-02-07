@@ -1,9 +1,10 @@
 use postgres::{Client, NoTls, Error};
-use std::env;
+use std::env; // will be used to access env. variables.
 
 fn main() -> Result<(), Error> {
 	
-	let con_string = env::var("SQL_STRING").expect("$SQL_STRING is not set");
+	let con_string = env::var("SQL_STRING")
+	.expect("$SQL_STRING is not set");
     let mut client = Client::connect(&con_string, NoTls)?;
     
     client.batch_execute("
